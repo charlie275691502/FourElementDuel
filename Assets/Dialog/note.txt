@@ -1,0 +1,16 @@
+// gameController
+public void Start_Dialog(Dialog_Delegate d, string title, string content, int options_amount){
+		if (has_dialog) return;
+		has_dialog = true;
+		GameObject dialog = Instantiate (dialog_gmo, Vector2.zero, Quaternion.identity);
+		dialog.GetComponent<Dialog_manager> ().dialog_Delegate = d;
+		dialog.GetComponent<Dialog_manager> ().options_amount = options_amount;
+		dialog.transform.Find ("canvas").Find ("Title").GetComponent<Text> ().text = title;
+		dialog.transform.Find ("canvas").Find ("Content").GetComponent<Text> ().text = content;
+	}
+
+
+
+//usage 
+
+gameController.Start_Dialog (null, "Error", "Can't find this room.", 1);
