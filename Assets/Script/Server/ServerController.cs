@@ -95,6 +95,10 @@ public class ServerController : MonoBehaviour {
 
     int packet_serial = 1;
     bool[] send_list = new bool[256];
+
+    public void SendToClient(Packet packet, Socket clientSocket){
+        SendToClient(false, packet, clientSocket);
+    }
     public void SendToClient(bool loop_sending, Packet packet, Socket clientSocket){
 
         if (loop_sending){
