@@ -71,7 +71,7 @@ public class ServerController : MonoBehaviour {
 			Socket clientSocket = serverSocket.Accept();//等到連線成功後才會往下執行
             int playerSerial = playerList.AddPlayer(clientSocket);
 			Debug.Log ("Accept: " + clientSocket.RemoteEndPoint.ToString());
-            SendToClient(false, new Packet(Command.M2C_WELCOME, new int[1]{playerSerial}), clientSocket);
+            SendToClient(new Packet(Command.M2C_WELCOME, new int[1]{playerSerial}), clientSocket);
 			clientSocket.BeginReceive(_recieveBuffer, 0, _recieveBuffer.Length,SocketFlags.None,new AsyncCallback(ReceiveCallback), clientSocket);
 
 			threadConnect = new Thread(Accept);
@@ -88,7 +88,6 @@ public class ServerController : MonoBehaviour {
 
     public void SendToAllClient(bool loop_sending, Packet packet){
         foreach(Player player in playerList.players){
-            Debug.Log("I");
             SendToClient(loop_sending, packet, player.clientSocket);
         }
     }
@@ -108,7 +107,6 @@ public class ServerController : MonoBehaviour {
             }
             send_list[packet_serial] = true;
             packet.Change_Serial(packet_serial);
-            Debug.Log("B");
 
             packet_serial++;
             if (packet_serial >= 256) packet_serial = 1;   
@@ -180,7 +178,7 @@ public class ServerController : MonoBehaviour {
 	}
 
     void C2M_PING(Packet packet, Socket clientSocket){
-        SendToClient(false, new Packet(Command.M2C_PONG, new int[1]{packet.datas[0]}), clientSocket);
+        SendToClient(new Packet(Command.M2C_PONG, new int[1]{packet.datas[0]}), clientSocket);
     } 
 
     int serial = 0;
@@ -207,9 +205,8 @@ public class ServerController : MonoBehaviour {
     public void SendHubList(){
         string hub_list = "";
         hub_list += "Players List\n";
-        foreach (Player player in playerList.players)
-        {
-            hub_list += " -" + player.nick + "\n";
+        foreach (Player player in playerList.players){
+            hub_list += " -" + player.nick + ((player.ready) ? "(ready)" : "") + "\n";
         }
 
         SendToAllClient(true, new Packet(Command.M2C_HUB_LIST, new string[1] { hub_list }));

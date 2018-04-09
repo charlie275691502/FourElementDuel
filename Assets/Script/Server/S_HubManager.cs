@@ -85,6 +85,7 @@ public class S_HubManager : MonoBehaviour {
 
     void C2M_READY(Packet packet, string endPoint){
         serverController.playerList.FindPlayer(endPoint).ready = true;
+        serverController.SendHubList();
     }
 
     /* -- Processing Packet -- */

@@ -16,7 +16,6 @@ public class HubManager : MonoBehaviour {
     void OnEnable(){
         onReceive = false;
         receiveSerials = clientController.AddSubscriptor(new ClientSubscriptor(OnReceive, new Command[2] { Command.M2C_HUB_LIST, Command.M2C_START_GAME }));
-        clientController.SendToServer(new Packet(Command.C2M_READY));
         clientController.SendToServer(new Packet(Command.C2M_CHANGE_NICK, new string[1] { gameController.nick }));
     }
     void OnDisable()
@@ -39,6 +38,10 @@ public class HubManager : MonoBehaviour {
     {
         clientController.SendToServer(new Packet(Command.C2M_CHANGE_NICK, new string[1] { nick }));
         PlayerPrefs.SetString("NICK", nick);
+    }
+
+    public void Ready(){
+        clientController.SendToServer(new Packet(Command.C2M_READY));
     }
 
     public void Play()
