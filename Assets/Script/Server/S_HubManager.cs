@@ -14,7 +14,7 @@ public class S_HubManager : MonoBehaviour {
 
     void OnEnable(){
         onReceive = false;
-        receiveSerials = serverController.AddSubscriptor(new ServerSubscriptor(OnReceive, new Command[3] { Command.C2M_CHANGE_NICK, Command.C2M_PLAY, Command.C2M_HUB_READY}));
+        receiveSerials = serverController.AddSubscriptor(new ServerSubscriptor(OnReceive, new Command[4] { Command.C2M_CHANGE_NICK, Command.C2M_PLAY, Command.C2M_HUB_READY, Command.C2M_GAME_READY}));
     }
     void OnDisable()
     {
@@ -57,6 +57,9 @@ public class S_HubManager : MonoBehaviour {
             case Command.C2M_HUB_READY:
                 C2M_READY(packet, endPoint);
                 break;
+            case Command.C2M_GAME_READY:
+                C2M_GAME_READY(packet, endPoint);
+                break;
             default:
                 break;
         }
@@ -77,17 +80,33 @@ public class S_HubManager : MonoBehaviour {
         serverController.SendToAllClient(true, new Packet(Command.M2C_START_GAME));
     }
 
-    bool AllReady(){
-        for (int i = 0; i < 4;i++){
-            if (!serverController.playerList.players[0].ready) return false;
-        }
-        return true;
-    }
-
     void C2M_READY(Packet packet, string endPoint){
         serverController.playerList.FindPlayer(endPoint).ready = true;
         serverController.SendHubList();
     }
 
+    void C2M_GAME_READY(Packet packet, string endPoint){
+        serverController.playerList.FindPlayer(endPoint).game_ready = true;
+        if(AllGameReady()){
+            for (int i = 0; i < 4; i++) {
+                serverController.playerList.players[0].game_ready = false;
+            }
+        }
+    }
+
     /* -- Processing Packet -- */
+
+    bool AllReady(){
+        for (int i = 0; i < 4; i++) {
+            if (!serverController.playerList.players[0].ready) return false;
+        }
+        return true;
+    }
+
+    bool AllGameReady(){
+        for (int i = 0; i < 4; i++){
+            if (!serverController.playerList.players[0].game_ready) return false;
+        }
+        return true;
+    }
 }
