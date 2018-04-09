@@ -11,7 +11,6 @@ public class S_GamePlayManager : MonoBehaviour {
     private Packet receivePacket;
     private string receiveEndPoint;
 
-    public int[] board;
 
     void OnEnable()
     {
@@ -34,56 +33,12 @@ public class S_GamePlayManager : MonoBehaviour {
 
     /* -- Sending Packet -- */
 
-    void Win_Check()
-    {
-        int[] Opoint = new int[8];
-        int[] Xpoint = new int[8];
 
-        int point = 0;
-        for (int i = 0; i < 9; i++)
-        {
-            int b = board[i];
-            int x = i % 3;
-            int y = i / 3;
-            if (b == 1)
-            {
-                point++;
-                Opoint[x]++;
-                Opoint[y + 3]++;
-                if (x == y) Opoint[6]++;
-                if (x + y == 2) Opoint[7]++;
-            }
-            if (b == 2)
-            {
-                point++;
-                Xpoint[x]++;
-                Xpoint[y + 3]++;
-                if (x == y) Xpoint[6]++;
-                if (x + y == 2) Xpoint[7]++;
-            }
-        }
 
-        foreach (int O in Opoint) {
-            if (O >= 3){
-                serverController.SendToAllClient(true, new Packet(Command.M2C_GAME_OVER, new int[1] { 1 }, new string[1] { serverController.playerList.FindPlayer(s_GameController.Oserial).nick }));
-                return;
-            }
-        }
-        foreach (int X in Xpoint) {
-            if (X >= 3){
-                serverController.SendToAllClient(true, new Packet(Command.M2C_GAME_OVER, new int[1] { 1 }, new string[1] { serverController.playerList.FindPlayer(s_GameController.Xserial).nick }));
-                return;
-            }
-        }
-        if(point == 9){
-            serverController.SendToAllClient(true, new Packet(Command.M2C_GAME_OVER, new int[1] { 0 }, new string[1] { "" }));
-            return;
-        }
-    }
     /* -- Receiving Packet -- */
 
     public void OnReceive(Packet packet, string endPoint){
-        while (onReceive == true) ;
+        while (onReceive == true) {}
         onReceive = true;
         receivePacket = packet;
         receiveEndPoint = endPoint;
@@ -94,7 +49,7 @@ public class S_GamePlayManager : MonoBehaviour {
         switch (packet.command)
         {
             case Command.C2M_PLACE:
-                C2M_PLACE(packet, endPoint);
+                //C2M_PLACE(packet, endPoint);
                 break;
             default:
                 break;
@@ -104,17 +59,4 @@ public class S_GamePlayManager : MonoBehaviour {
     /* -- Processing Packet -- */
 
 
-    void C2M_PLACE(Packet packet, string endPoint){
-        int index = packet.datas[0] - 1;
-        if(board[index] == 0){
-            int player_team = serverController.playerList.FindPlayer(endPoint).team;
-            if(s_GameController.turn_priority == player_team){
-                board[index] = serverController.playerList.FindPlayer(endPoint).team;
-                serverController.SendToAllClient(true, new Packet(Command.M2C_UPDATE_BOARD, board));
-                s_GameController.turn_priority = 3 - s_GameController.turn_priority;
-
-                Win_Check();
-            }
-        }
-    }
 }

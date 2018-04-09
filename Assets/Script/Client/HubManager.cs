@@ -41,7 +41,7 @@ public class HubManager : MonoBehaviour {
     }
 
     public void Ready(){
-        clientController.SendToServer(new Packet(Command.C2M_READY));
+        clientController.SendToServer(new Packet(Command.C2M_HUB_READY));
     }
 
     public void Play()

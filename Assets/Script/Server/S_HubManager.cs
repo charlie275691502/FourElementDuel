@@ -14,7 +14,7 @@ public class S_HubManager : MonoBehaviour {
 
     void OnEnable(){
         onReceive = false;
-        receiveSerials = serverController.AddSubscriptor(new ServerSubscriptor(OnReceive, new Command[3] { Command.C2M_CHANGE_NICK, Command.C2M_PLAY, Command.C2M_READY}));
+        receiveSerials = serverController.AddSubscriptor(new ServerSubscriptor(OnReceive, new Command[3] { Command.C2M_CHANGE_NICK, Command.C2M_PLAY, Command.C2M_HUB_READY}));
     }
     void OnDisable()
     {
@@ -54,7 +54,7 @@ public class S_HubManager : MonoBehaviour {
             case Command.C2M_PLAY:
                 C2M_PLAY(packet, endPoint);
                 break;
-            case Command.C2M_READY:
+            case Command.C2M_HUB_READY:
                 C2M_READY(packet, endPoint);
                 break;
             default:
@@ -69,18 +69,19 @@ public class S_HubManager : MonoBehaviour {
     }
 
     void C2M_PLAY(Packet packet, string endPoint){
-        if (!serverController.playerList.players[0].ready || !serverController.playerList.players[1].ready) return;
-        int team1 = Random.Range(0, 2);
-        int team2 = 1 - team1;
-        serverController.playerList.players[team1].team = 1;
-        serverController.playerList.players[team2].team = 2;
-        s_GameController.Oserial = serverController.playerList.players[team1].serial;
-        s_GameController.Xserial = serverController.playerList.players[team2].serial;
-        s_GameController.turn_priority = 1;
-        s_GameController.s_GamePlayManager.board = new int[9];
+        if (!AllReady()) return;
         serverController.playerList.players[0].ready = false;
         serverController.playerList.players[1].ready = false;
-        serverController.SendToAllClient(true, new Packet(Command.M2C_START_GAME, new int[2] { serverController.playerList.players[team1].serial, serverController.playerList.players[team2].serial }, new string[2] { serverController.playerList.players[team1].nick, serverController.playerList.players[team2].nick }));
+        serverController.playerList.players[2].ready = false;
+        serverController.playerList.players[3].ready = false;
+        serverController.SendToAllClient(true, new Packet(Command.M2C_START_GAME));
+    }
+
+    bool AllReady(){
+        for (int i = 0; i < 4;i++){
+            if (!serverController.playerList.players[0].ready) return false;
+        }
+        return true;
     }
 
     void C2M_READY(Packet packet, string endPoint){
