@@ -9,6 +9,7 @@ namespace Guest{
         public int serial;
         public string nick;
         public bool ready;
+        public bool game_ready;
         public float ping_time;
         public float pong_time
         {
@@ -28,6 +29,7 @@ namespace Guest{
         {
             nick = n;
             ready = false;
+            game_ready = false;
             ping_time = 0;
             clientSocket = s;
             serial = se;
