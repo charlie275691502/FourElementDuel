@@ -10,7 +10,7 @@ using System.IO;
 using System.Threading;
 
 static class Constants{
-	public const int version = 1;
+	public const int maxPlayer = 4;
 }
 
 public enum Data_Type{
