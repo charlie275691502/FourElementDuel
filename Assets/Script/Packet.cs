@@ -41,6 +41,7 @@ public enum Command
     Unsigned = 0x00,
 
     C2M_PING = 0x01,
+    C2M_SERIAL_PONG = 0x02,
     C2M_CHANGE_NICK = 0x10,
     C2M_PLAY = 0x11,
     C2M_READY = 0x12,
@@ -55,7 +56,7 @@ public enum Command
 }
 
 public class Packet{
-	public int version;
+	public int serial;
 	public Command command;
 	public int[] datas;
 	public float[] f_datas;
@@ -84,9 +85,18 @@ public class Packet{
 	public Packet(Command c,          float[] f_d                               ){	new_Packet (c, new int[0]	, f_d			, new string[0]	, new List<int>[0]	);}
 	public Packet(Command c,					   string[] s_d                 ){	new_Packet (c, new int[0]	, new float[0]	, s_d			, new List<int>[0]	);}
 	public Packet(Command c                      	    	                    ){	new_Packet (c, new int[0]	, new float[0]	, new string[0]	, new List<int>[0]	);}
+    public Packet(int s){
+        serial = s;
+        command = Command.C2M_SERIAL_PONG;
+        datas = new int[0];
+        f_datas = new float[0];
+        s_datas = new string[0];
+        l_datas = new List<int>[0];
+        b_datas = Generate_b_datas();
+    }
 
 	public void new_Packet(Command c, int[] d, float[] f_d, string[] s_d, List<int>[] l_d){
-		version = Constants.version;
+		serial = 0;
 		command = c;
 		datas = d;
 		f_datas = f_d;
@@ -95,9 +105,14 @@ public class Packet{
 		b_datas = Generate_b_datas();
 	}
 
+    public void Change_Serial(int s){
+        serial = s;
+        b_datas[0] = System.Convert.ToByte(serial);
+    }
+
 	public Packet(byte[] b_d){
 		b_datas = b_d;
-		version = b_d [0];
+		serial = b_d [0];
 		command = (Command)b_d[1];
 		Data_Type[] slices = Get_Packet_Slices ();
 		Pair pair = Get_Slices_Length (slices);
@@ -171,7 +186,7 @@ public class Packet{
 
 		int data_length = Get_Bytes_Amount (slices, s_datas, l_datas);
 		byte[] ret = new byte[2 + data_length];
-		ret[0] = System.Convert.ToByte(version);
+		ret[0] = System.Convert.ToByte(serial);
 		ret[1] = System.Convert.ToByte((int)command);
 
 		int d_pointer = 0;
@@ -278,7 +293,8 @@ public class Packet{
 
 	Data_Type[] Get_Packet_Slices(){
 		switch (command) {
-            case Command.C2M_PING:			return new Data_Type[1]{Data_Type.Byte};
+            case Command.C2M_PING:          return new Data_Type[1] { Data_Type.Byte };
+            case Command.C2M_SERIAL_PONG:	return new Data_Type[0];
             case Command.C2M_CHANGE_NICK:	return new Data_Type[1]{Data_Type.String};
             case Command.C2M_PLAY:          return new Data_Type[0];
             case Command.C2M_READY:         return new Data_Type[0];
@@ -335,7 +351,7 @@ public class Packet{
 		}
 		string b_d_string = "";
 		foreach (byte b_d in b_datas)b_d_string += String.Format ("{0:X2}", b_d) + " ";
-		N_Print(s + "\nversion: " + version.ToString() + "\nCommand: " + command + "\ndatas: " + d_string + "\nb_datas: " + b_d_string);
+		N_Print(s + "\nserial: " + serial.ToString() + "\nCommand: " + command + "\ndatas: " + d_string + "\nb_datas: " + b_d_string);
 	}
 
 	private void N_Print(string s){

@@ -14,6 +14,6 @@ public class TestSendManager : MonoBehaviour {
     public void SendToClient()
     {
         Debug.Log("SendToClient Clicked ");
-        serverController.SendToAllClient(new Packet(Command.C2M_CHANGE_NICK, new string[1] { "hi" }));
+        serverController.SendToAllClient(false, new Packet(Command.C2M_CHANGE_NICK, new string[1] { "hi" }));
     }
 }

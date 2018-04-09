@@ -92,12 +92,18 @@ public class ClientController : MonoBehaviour {
         Packet packet = new Packet(recData);
         if (packet.command != Command.M2C_PONG || !hide_ping_msg)packet.Print ("client RECEIVED");
 
+
+        if (packet.serial != 0) {
+            SendToServer(new Packet(packet.serial));
+        }
+
+        if (packet.command == Command.M2C_PONG) {
+            M2C_PONG(packet);
+            return;
+        }
+
 		// Notify other managers when receiving data from server
 		foreach (ClientSubscriptor subscriptor in subscriptors) {
-            if (packet.command == Command.M2C_PONG){
-                M2C_PONG(packet);
-                continue;
-            }
 			foreach (Command command in subscriptor.commands) {
 				if (command == packet.command) {
 					subscriptor.subscriptor_Delegate (packet);

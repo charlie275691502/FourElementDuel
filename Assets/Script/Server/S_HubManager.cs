@@ -65,7 +65,6 @@ public class S_HubManager : MonoBehaviour {
     void C2M_CHANGE_NICK(Packet packet, string endPoint){
         Player player = serverController.playerList.FindPlayer(endPoint);
         player.nick = packet.s_datas[0];
-        Debug.Log(player.nick);
         serverController.SendHubList();
     }
 
@@ -81,7 +80,7 @@ public class S_HubManager : MonoBehaviour {
         s_GameController.s_GamePlayManager.board = new int[9];
         serverController.playerList.players[0].ready = false;
         serverController.playerList.players[1].ready = false;
-        serverController.SendToAllClient(new Packet(Command.M2C_START_GAME, new int[2] { serverController.playerList.players[team1].serial, serverController.playerList.players[team2].serial }, new string[2] { serverController.playerList.players[team1].nick, serverController.playerList.players[team2].nick }));
+        serverController.SendToAllClient(true, new Packet(Command.M2C_START_GAME, new int[2] { serverController.playerList.players[team1].serial, serverController.playerList.players[team2].serial }, new string[2] { serverController.playerList.players[team1].nick, serverController.playerList.players[team2].nick }));
     }
 
     void C2M_READY(Packet packet, string endPoint){

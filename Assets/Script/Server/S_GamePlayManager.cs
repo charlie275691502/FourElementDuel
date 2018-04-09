@@ -65,18 +65,18 @@ public class S_GamePlayManager : MonoBehaviour {
 
         foreach (int O in Opoint) {
             if (O >= 3){
-                serverController.SendToAllClient(new Packet(Command.M2C_GAME_OVER, new int[1] { 1 }, new string[1] { serverController.playerList.FindPlayer(s_GameController.Oserial).nick }));
+                serverController.SendToAllClient(true, new Packet(Command.M2C_GAME_OVER, new int[1] { 1 }, new string[1] { serverController.playerList.FindPlayer(s_GameController.Oserial).nick }));
                 return;
             }
         }
         foreach (int X in Xpoint) {
             if (X >= 3){
-                serverController.SendToAllClient(new Packet(Command.M2C_GAME_OVER, new int[1] { 1 }, new string[1] { serverController.playerList.FindPlayer(s_GameController.Xserial).nick }));
+                serverController.SendToAllClient(true, new Packet(Command.M2C_GAME_OVER, new int[1] { 1 }, new string[1] { serverController.playerList.FindPlayer(s_GameController.Xserial).nick }));
                 return;
             }
         }
         if(point == 9){
-            serverController.SendToAllClient(new Packet(Command.M2C_GAME_OVER, new int[1] { 0 }, new string[1] { "" }));
+            serverController.SendToAllClient(true, new Packet(Command.M2C_GAME_OVER, new int[1] { 0 }, new string[1] { "" }));
             return;
         }
     }
@@ -110,7 +110,7 @@ public class S_GamePlayManager : MonoBehaviour {
             int player_team = serverController.playerList.FindPlayer(endPoint).team;
             if(s_GameController.turn_priority == player_team){
                 board[index] = serverController.playerList.FindPlayer(endPoint).team;
-                serverController.SendToAllClient(new Packet(Command.M2C_UPDATE_BOARD, board));
+                serverController.SendToAllClient(true, new Packet(Command.M2C_UPDATE_BOARD, board));
                 s_GameController.turn_priority = 3 - s_GameController.turn_priority;
 
                 Win_Check();
