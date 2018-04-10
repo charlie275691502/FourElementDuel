@@ -22,8 +22,6 @@ namespace Guest{
         public bool disconnected = false;
         public Socket clientSocket;
 
-        public int team;
-        public PlayerGameStatus gameStatus;
 
         public Player(string n, Socket s, int se)
         {
@@ -33,7 +31,6 @@ namespace Guest{
             ping_time = 0;
             clientSocket = s;
             serial = se;
-            gameStatus = new PlayerGameStatus();
         }
     }
 

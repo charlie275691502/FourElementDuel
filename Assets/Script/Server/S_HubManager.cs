@@ -14,17 +14,15 @@ public class S_HubManager : MonoBehaviour {
 
     void OnEnable(){
         onReceive = false;
-        receiveSerials = serverController.AddSubscriptor(new ServerSubscriptor(OnReceive, new Command[4] { Command.C2M_CHANGE_NICK, Command.C2M_PLAY, Command.C2M_HUB_READY, Command.C2M_GAME_READY}));
+        receiveSerials = serverController.AddSubscriptor(new ServerSubscriptor(OnReceive, new Command[3] { Command.C2M_CHANGE_NICK, Command.C2M_PLAY, Command.C2M_HUB_READY}));
     }
-    void OnDisable()
-    {
+    void OnDisable(){
         serverController.RemoveSubscriptor(receiveSerials);
     }
 
     void Update()
     {
-        if (onReceive)
-        {
+        if (onReceive){
             AnalysisReceive(receivePacket, receiveEndPoint);
             onReceive = false;
         }
@@ -44,10 +42,8 @@ public class S_HubManager : MonoBehaviour {
         receiveEndPoint = endPoint;
     }
 
-    public void AnalysisReceive(Packet packet, string endPoint)
-    {
-        switch (packet.command)
-        {
+    public void AnalysisReceive(Packet packet, string endPoint){
+        switch (packet.command){
             case Command.C2M_CHANGE_NICK:
                 C2M_CHANGE_NICK(packet, endPoint);
                 break;
@@ -56,9 +52,6 @@ public class S_HubManager : MonoBehaviour {
                 break;
             case Command.C2M_HUB_READY:
                 C2M_READY(packet, endPoint);
-                break;
-            case Command.C2M_GAME_READY:
-                C2M_GAME_READY(packet, endPoint);
                 break;
             default:
                 break;
@@ -77,7 +70,7 @@ public class S_HubManager : MonoBehaviour {
         serverController.playerList.players[1].ready = false;
         serverController.playerList.players[2].ready = false;
         serverController.playerList.players[3].ready = false;
-        serverController.SendToAllClient(true, new Packet(Command.M2C_START_GAME));
+        s_GameController.s_GamePlayManager.InitGame();
     }
 
     void C2M_READY(Packet packet, string endPoint){
@@ -85,27 +78,11 @@ public class S_HubManager : MonoBehaviour {
         serverController.SendHubList();
     }
 
-    void C2M_GAME_READY(Packet packet, string endPoint){
-        serverController.playerList.FindPlayer(endPoint).game_ready = true;
-        if(AllGameReady()){
-            for (int i = 0; i < 4; i++) {
-                serverController.playerList.players[0].game_ready = false;
-            }
-        }
-    }
-
     /* -- Processing Packet -- */
 
     bool AllReady(){
         for (int i = 0; i < 4; i++) {
             if (!serverController.playerList.players[0].ready) return false;
-        }
-        return true;
-    }
-
-    bool AllGameReady(){
-        for (int i = 0; i < 4; i++){
-            if (!serverController.playerList.players[0].game_ready) return false;
         }
         return true;
     }

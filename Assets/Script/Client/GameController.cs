@@ -24,9 +24,7 @@ public class GameController : MonoBehaviour {
     public GameObject dialog_gmo;
 
     [HideInInspector] public int serial;
-    [HideInInspector] public string OName;
-    [HideInInspector] public string XName;
-    [HideInInspector] public int team;
+    [HideInInspector] public int gameSerial;
 
     [HideInInspector] public string nick;
 

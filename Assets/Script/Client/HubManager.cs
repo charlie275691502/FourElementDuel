@@ -79,11 +79,7 @@ public class HubManager : MonoBehaviour {
     }
 
     void M2C_START_GAME(Packet packet){
-        gameController.OName = packet.s_datas[0];
-        gameController.XName = packet.s_datas[1];
-        gameController.team = 0;
-        if (packet.datas[0] == gameController.serial) gameController.team = 1;
-        if (packet.datas[1] == gameController.serial) gameController.team = 2;
+        gameController.gameSerial = packet.datas[0];
         gameController.SwitchPhases(Phases.GamePlay);
     }
 }

@@ -47,7 +47,6 @@ public enum Command
     C2M_HUB_READY = 0x12,
     C2M_GAME_READY = 0x13,
     C2M_PUT_SKILLPOINT = 0x20,
-    C2M_END_TURN = 0x21,
 
     M2C_PONG = 0x81,
     M2C_WELCOME = 0x83,
@@ -304,7 +303,6 @@ public class Packet{
             case Command.C2M_HUB_READY:         return new Data_Type[0];
             case Command.C2M_GAME_READY:        return new Data_Type[0];
             case Command.C2M_PUT_SKILLPOINT:    return new Data_Type[1]{ Data_Type.Byte };
-            case Command.C2M_END_TURN:          return new Data_Type[0];
                 
             case Command.M2C_PONG:              return new Data_Type[1] { Data_Type.Byte };
             case Command.M2C_WELCOME:           return new Data_Type[1] { Data_Type.Byte };
