@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.574817, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6329,17 +6329,17 @@ MonoBehaviour:
     _thunderAp: 0
     _ap: 0
     uI:
-      lines: {fileID: 0}
-      nick: {fileID: 0}
-      hp: {fileID: 0}
-      shield: {fileID: 0}
-      fireAp: {fileID: 0}
-      waterAp: {fileID: 0}
-      airAp: {fileID: 0}
-      earthAp: {fileID: 0}
-      poisonAp: {fileID: 0}
-      thunderAp: {fileID: 0}
-      ap: {fileID: 0}
+      lines: {fileID: 11403094}
+      nick: {fileID: 650475177}
+      hp: {fileID: 1942405715}
+      shield: {fileID: 1022360104}
+      fireAp: {fileID: 144263068}
+      waterAp: {fileID: 783740609}
+      airAp: {fileID: 468484789}
+      earthAp: {fileID: 188479120}
+      poisonAp: {fileID: 1915462665}
+      thunderAp: {fileID: 772600045}
+      ap: {fileID: 825015639}
   - list: 
     _hp: 0
     _shield: 0
@@ -6351,17 +6351,17 @@ MonoBehaviour:
     _thunderAp: 0
     _ap: 0
     uI:
-      lines: {fileID: 0}
-      nick: {fileID: 0}
-      hp: {fileID: 0}
-      shield: {fileID: 0}
-      fireAp: {fileID: 0}
-      waterAp: {fileID: 0}
-      airAp: {fileID: 0}
-      earthAp: {fileID: 0}
-      poisonAp: {fileID: 0}
-      thunderAp: {fileID: 0}
-      ap: {fileID: 0}
+      lines: {fileID: 1197255661}
+      nick: {fileID: 899988518}
+      hp: {fileID: 1121291395}
+      shield: {fileID: 908346573}
+      fireAp: {fileID: 1324113324}
+      waterAp: {fileID: 272200424}
+      airAp: {fileID: 808662128}
+      earthAp: {fileID: 1070665862}
+      poisonAp: {fileID: 1443456864}
+      thunderAp: {fileID: 415537851}
+      ap: {fileID: 1318505848}
   - list: 
     _hp: 0
     _shield: 0
@@ -6373,17 +6373,17 @@ MonoBehaviour:
     _thunderAp: 0
     _ap: 0
     uI:
-      lines: {fileID: 0}
-      nick: {fileID: 0}
-      hp: {fileID: 0}
-      shield: {fileID: 0}
-      fireAp: {fileID: 0}
-      waterAp: {fileID: 0}
-      airAp: {fileID: 0}
-      earthAp: {fileID: 0}
-      poisonAp: {fileID: 0}
-      thunderAp: {fileID: 0}
-      ap: {fileID: 0}
+      lines: {fileID: 1256937645}
+      nick: {fileID: 625125548}
+      hp: {fileID: 1679389729}
+      shield: {fileID: 1602129660}
+      fireAp: {fileID: 1216930004}
+      waterAp: {fileID: 1684375159}
+      airAp: {fileID: 2047193529}
+      earthAp: {fileID: 1796381137}
+      poisonAp: {fileID: 922758207}
+      thunderAp: {fileID: 435695511}
+      ap: {fileID: 1119717258}
   - list: 
     _hp: 0
     _shield: 0
@@ -6395,17 +6395,17 @@ MonoBehaviour:
     _thunderAp: 0
     _ap: 0
     uI:
-      lines: {fileID: 0}
-      nick: {fileID: 0}
-      hp: {fileID: 0}
-      shield: {fileID: 0}
-      fireAp: {fileID: 0}
-      waterAp: {fileID: 0}
-      airAp: {fileID: 0}
-      earthAp: {fileID: 0}
-      poisonAp: {fileID: 0}
-      thunderAp: {fileID: 0}
-      ap: {fileID: 0}
+      lines: {fileID: 871876347}
+      nick: {fileID: 421781193}
+      hp: {fileID: 1191035459}
+      shield: {fileID: 1258147494}
+      fireAp: {fileID: 1048017550}
+      waterAp: {fileID: 270110346}
+      airAp: {fileID: 871022075}
+      earthAp: {fileID: 1988758774}
+      poisonAp: {fileID: 452000693}
+      thunderAp: {fileID: 445800415}
+      ap: {fileID: 1424242777}
 --- !u!1 &709161430
 GameObject:
   m_ObjectHideFlags: 0
