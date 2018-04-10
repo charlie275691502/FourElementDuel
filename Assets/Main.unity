@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.574817, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9325,7 +9325,7 @@ MonoBehaviour:
   now_Phase: 0
   startMenu_gmo: {fileID: 2033720430}
   hub_gmo: {fileID: 1162748969}
-  gamePlay_gmo: {fileID: 0}
+  gamePlay_gmo: {fileID: 706105309}
   testSend_gmo: {fileID: 276926270}
   has_dialog: 0
   dialog_gmo: {fileID: 1522123200245722, guid: 2cc246f316fc948388a57b602685cc7c, type: 2}
