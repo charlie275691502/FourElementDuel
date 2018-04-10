@@ -51,12 +51,10 @@ public class ServerController : MonoBehaviour {
 
     public void StopServer(){
         foreach(Guest.Player player in playerList.players){
-            try
-            {
+            try{
                 player.clientSocket.Close();
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex){
 				Debug.Log(ex.ToString());
             }
         }
@@ -114,19 +112,12 @@ public class ServerController : MonoBehaviour {
 
         if (packet.command != Command.M2C_PONG || !hide_ping_msg) packet.Print("SEND");
         byte[] data = packet.b_datas;
-        try
-        {
-            byte[] byteArray = data;
+        byte[] byteArray = data;
 
-            if (loop_sending) {
-                StartCoroutine(Loop_SendData(packet.serial, byteArray, clientSocket));
-            } else {
-                SendData(byteArray, clientSocket);
-            }
-        }
-        catch (SocketException ex)
-        {
-            Debug.LogWarning(ex.Message);
+        if (loop_sending) {
+            StartCoroutine(Loop_SendData(packet.serial, byteArray, clientSocket));
+        } else {
+            SendData(byteArray, clientSocket);
         }
     }
 

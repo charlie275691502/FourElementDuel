@@ -87,6 +87,7 @@ public class ClientController : MonoBehaviour {
 			return;
 		byte[] recData = new byte[recieved];
 		Buffer.BlockCopy(_recieveBuffer,0,recData,0,recieved);
+        //不能亂動
         _clientSocket.BeginReceive(_recieveBuffer, 0, _recieveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), null);
 		
         Packet packet = new Packet(recData);
