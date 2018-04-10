@@ -41,7 +41,7 @@ public class ClientController : MonoBehaviour {
 		}
 	}
 	public void SendToServer(Packet packet) {
-		if (packet.command != Command.C2M_PING || !hide_ping_msg)packet.Print ("SEND");
+		if (packet.command != Command.C2M_PING || !hide_ping_msg)packet.Print ("client SEND");
 
 		byte[] data = packet.b_datas;
 		try

@@ -34,7 +34,7 @@ public class S_GamePlayManager : MonoBehaviour {
     /* -- Sending Packet -- */
 
     int performer_serial; // 0, 1, 2, 3
-    public PlayersGameStatus playersGameStatus;
+    public PlayersGameStatus playersGameStatus = new PlayersGameStatus();
 
     public void InitGame(){
         // 決定順序

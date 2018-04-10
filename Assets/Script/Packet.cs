@@ -307,7 +307,7 @@ public class Packet{
             case Command.M2C_PONG:              return new Data_Type[1] { Data_Type.Byte };
             case Command.M2C_WELCOME:           return new Data_Type[1] { Data_Type.Byte };
             case Command.M2C_HUB_LIST:          return new Data_Type[1] { Data_Type.String };
-            case Command.M2C_START_GAME:        return new Data_Type[0];
+            case Command.M2C_START_GAME:        return new Data_Type[1] { Data_Type.Byte };
             case Command.M2C_UPDATE_BOARD:      return new Data_Type[9] { Data_Type.String, Data_Type.String, Data_Type.String, Data_Type.String, Data_Type.Short_List, Data_Type.Short_List, Data_Type.Short_List, Data_Type.Short_List, Data_Type.Short_List };
             case Command.M2C_TURN_START:        return new Data_Type[1] { Data_Type.Byte };
             case Command.M2C_DRAW:              return new Data_Type[1] { Data_Type.Short_List };

@@ -91,7 +91,7 @@ public class ServerController : MonoBehaviour {
     }
 
     int packet_serial = 1;
-    bool[] send_list = new bool[256];
+    public bool[] send_list = new bool[256];
 
     public void SendToClient(Packet packet, Socket clientSocket){
         SendToClient(false, packet, clientSocket);
@@ -110,26 +110,28 @@ public class ServerController : MonoBehaviour {
             if (packet_serial >= 256) packet_serial = 1;   
         } 
 
-        if (packet.command != Command.M2C_PONG || !hide_ping_msg) packet.Print("SEND");
+        if (packet.command != Command.M2C_PONG || !hide_ping_msg) packet.Print("server SEND " + clientSocket.RemoteEndPoint.ToString());
         byte[] data = packet.b_datas;
         byte[] byteArray = data;
+        int this_serial = packet.serial;
 
         if (loop_sending) {
-            StartCoroutine(Loop_SendData(packet.serial, byteArray, clientSocket));
+            StartCoroutine(Loop_SendData(this_serial, byteArray, clientSocket));
         } else {
             SendData(byteArray, clientSocket);
         }
     }
 
     IEnumerator Loop_SendData(int this_serial, byte[] data, Socket clientSocket){
-        while(send_list[this_serial]){
+        int i = 5;
+        while(send_list[this_serial] && i > 0){
             SendData(data, clientSocket);
             yield return new WaitForSeconds(1);
+            i--;
         }
     }
 
-    private void SendData(byte[] data, Socket clientSocket)
-    {
+    private void SendData(byte[] data, Socket clientSocket){
         SocketAsyncEventArgs socketAsyncData = new SocketAsyncEventArgs();
         socketAsyncData.SetBuffer(data, 0, data.Length);
         clientSocket.SendAsync(socketAsyncData);

@@ -41,7 +41,7 @@ public class Player{
 }
 
 public class PlayersGameStatus{
-    public List<Player> players;
+    public List<Player> players = new List<Player>(0);
     public string[] nicks = new string[0];
 
     public void AddPlayer(Player playerGameStatus){

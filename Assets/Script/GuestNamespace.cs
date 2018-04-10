@@ -34,6 +34,7 @@ namespace Guest{
         }
     }
 
+    [System.Serializable]
     public class PlayerList{
         public List<Player> players = new List<Player>();
 
