@@ -59,7 +59,7 @@ public class S_HubManager : MonoBehaviour {
     }
 
     void C2M_CHANGE_NICK(Packet packet, string endPoint){
-        Player player = serverController.playerList.FindPlayer(endPoint);
+		Guest.Player player = serverController.playerList.FindPlayer(endPoint);
         player.nick = packet.s_datas[0];
         serverController.SendHubList();
     }

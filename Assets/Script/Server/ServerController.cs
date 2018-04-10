@@ -50,14 +50,14 @@ public class ServerController : MonoBehaviour {
 	}
 
     public void StopServer(){
-        foreach(Player player in playerList.players){
+        foreach(Guest.Player player in playerList.players){
             try
             {
                 player.clientSocket.Close();
             }
             catch (Exception ex)
             {
-                Debug.Log(ex.ToString());
+				Debug.Log(ex.ToString());
             }
         }
 
@@ -87,8 +87,8 @@ public class ServerController : MonoBehaviour {
 	}
 
     public void SendToAllClient(bool loop_sending, Packet packet){
-        foreach(Player player in playerList.players){
-            SendToClient(loop_sending, packet, player.clientSocket);
+        foreach(Guest.Player player in playerList.players){
+			SendToClient(loop_sending, packet, player.clientSocket);
         }
     }
 
@@ -205,7 +205,7 @@ public class ServerController : MonoBehaviour {
     public void SendHubList(){
         string hub_list = "";
         hub_list += "Players List\n";
-        foreach (Player player in playerList.players){
+        foreach (Guest.Player player in playerList.players){
             hub_list += " -" + player.nick + ((player.ready) ? "(ready)" : "") + "\n";
         }
 

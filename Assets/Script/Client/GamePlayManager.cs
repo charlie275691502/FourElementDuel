@@ -4,29 +4,62 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [System.Serializable]
+public class ClientAttributes : Attributes{
+    public override int hp          { get { return _hp; }           set { _hp = value;          uI.hp.text = value.ToString(); } } 
+    public override int shield      { get { return _shield; }       set { _shield = value;      uI.shield.text = value.ToString(); } }
+    public override int fireAp      { get { return _fireAp; }       set { _fireAp = value;      uI.fireAp.text = value.ToString(); } }
+    public override int waterAp     { get { return _waterAp; }      set { _waterAp = value;     uI.waterAp.text = value.ToString(); } }
+    public override int airAp       { get { return _airAp; }        set { _airAp = value;       uI.airAp.text = value.ToString(); } }
+    public override int earthAp     { get { return _earthAp; }      set { _earthAp = value;     uI.earthAp.text = value.ToString(); } }
+    public override int poisonAp    { get { return _poisonAp; }     set { _poisonAp = value;    uI.poisonAp.text = value.ToString(); } }
+    public override int thunderAp   { get { return _thunderAp; }    set { _thunderAp = value;   uI.thunderAp.text = value.ToString(); } }
+    public override int ap          { get { return _ap; }           set { _ap = value;          uI.ap.text = value.ToString(); } }
+    public AttributesUI uI;
+
+    public void UpdateList(List<int> l){
+        hp = l[0];
+        shield = l[1];
+        fireAp = l[2];
+        waterAp = l[3];
+        airAp = l[4];
+        earthAp = l[5];
+        poisonAp = l[6];
+        thunderAp = l[7];
+        ap = l[8];
+    }
+}
+
+[System.Serializable]
 public class AttributesUI{
+    public GameObject lines;
     public Text nick;
     public Text hp;
     public Text shield;
-    public Text fire_ap;
-    public Text water_ap;
-    public Text air_ap;
-    public Text earth_ap;
-    public Text poison_ap;
-    public Text thunder_ap;
+    public Text fireAp;
+    public Text waterAp;
+    public Text airAp;
+    public Text earthAp;
+    public Text poisonAp;
+    public Text thunderAp;
     public Text ap;
 
     public void UpdateUI(string n, List<int> list){
         nick.text = n;
         hp.text = list[0].ToString();
         shield.text = list[1].ToString();
-        fire_ap.text = list[2].ToString();
-        water_ap.text = list[3].ToString();
-        air_ap.text = list[4].ToString();
-        earth_ap.text = list[5].ToString();
-        poison_ap.text = list[6].ToString();
-        thunder_ap.text = list[7].ToString();
+        fireAp.text = list[2].ToString();
+        waterAp.text = list[3].ToString();
+        airAp.text = list[4].ToString();
+        earthAp.text = list[5].ToString();
+        poisonAp.text = list[6].ToString();
+        thunderAp.text = list[7].ToString();
         ap.text = list[8].ToString();
+    }
+
+    public void UpdateFrameColor(Color color){
+        foreach(Transform child in lines.transform){
+            child.GetComponent<Image>().color = color;
+        }
     }
 }
 
@@ -39,7 +72,7 @@ public class GamePlayManager : MonoBehaviour {
     private bool onReceive;
     private Packet receivePacket;
 
-    public AttributesUI[] attributesUIs;
+    public ClientAttributes[] clientAttributes;
 
     void OnEnable(){
         onReceive = false;
@@ -60,6 +93,11 @@ public class GamePlayManager : MonoBehaviour {
     }
 
     /* -- Sending Packet -- */
+
+    // 1~6
+    public void PutSkillPoint(int index){
+        clientController.SendToServer(new Packet(Command.C2M_PUT_SKILLPOINT, new int[1]{index}));
+    }
 
     /* -- Receiving Packet -- */
 
@@ -88,23 +126,39 @@ public class GamePlayManager : MonoBehaviour {
         }
     }
 
-    /* -- Processing data -- */
-
     void M2C_UPDATE_BOARD(Packet packet){
         for (int i = 0; i < Constants.maxPlayer; i++){
-            attributesUIs[i].UpdateUI(packet.s_datas[i], packet.l_datas[i]);
+            clientAttributes[i].uI.UpdateUI(packet.s_datas[ClientSerialToServerSerial(i)], packet.l_datas[ClientSerialToServerSerial(i)]);
         }
     }
 
+    bool myTurn = false;
     void M2C_TURN_START(Packet packet){
-
+        for (int i = 0; i < Constants.maxPlayer; i++) clientAttributes[i].uI.UpdateFrameColor(Color.white);
+        int x = ServerSerialToClientSerial(packet.datas[0]);
+        clientAttributes[x].uI.UpdateFrameColor(Color.yellow);
+        myTurn = (x == 0);
     }
 
     void M2C_DRAW(Packet packet){
-
+        
     }
 
     void M2C_GAIN_SKILLPOINT(Packet packet){
+        clientAttributes[0].ap += packet.datas[0];
+    }
 
+    /* -- Processing data -- */
+
+    public int ClientSerialToServerSerial(int x){
+        x += gameController.gameSerial;
+        if (x >= Constants.maxPlayer) x -= Constants.maxPlayer;
+        return x;
+    }
+
+    public int ServerSerialToClientSerial(int x){
+        x += (Constants.maxPlayer - gameController.gameSerial);
+        if (x >= Constants.maxPlayer) x -= Constants.maxPlayer;
+        return x;
     }
 }

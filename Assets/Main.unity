@@ -6317,47 +6317,95 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clientController: {fileID: 1468515427}
   gameController: {fileID: 993983070}
-  attributesUIs:
-  - nick: {fileID: 0}
-    hp: {fileID: 0}
-    shield: {fileID: 0}
-    fire_ap: {fileID: 0}
-    water_ap: {fileID: 0}
-    air_ap: {fileID: 0}
-    earth_ap: {fileID: 0}
-    poison_ap: {fileID: 0}
-    thunder_ap: {fileID: 0}
-    ap: {fileID: 0}
-  - nick: {fileID: 0}
-    hp: {fileID: 0}
-    shield: {fileID: 0}
-    fire_ap: {fileID: 0}
-    water_ap: {fileID: 0}
-    air_ap: {fileID: 0}
-    earth_ap: {fileID: 0}
-    poison_ap: {fileID: 0}
-    thunder_ap: {fileID: 0}
-    ap: {fileID: 0}
-  - nick: {fileID: 0}
-    hp: {fileID: 0}
-    shield: {fileID: 0}
-    fire_ap: {fileID: 0}
-    water_ap: {fileID: 0}
-    air_ap: {fileID: 0}
-    earth_ap: {fileID: 0}
-    poison_ap: {fileID: 0}
-    thunder_ap: {fileID: 0}
-    ap: {fileID: 0}
-  - nick: {fileID: 0}
-    hp: {fileID: 0}
-    shield: {fileID: 0}
-    fire_ap: {fileID: 0}
-    water_ap: {fileID: 0}
-    air_ap: {fileID: 0}
-    earth_ap: {fileID: 0}
-    poison_ap: {fileID: 0}
-    thunder_ap: {fileID: 0}
-    ap: {fileID: 0}
+  clientAttributes:
+  - list: 
+    _hp: 0
+    _shield: 0
+    _fireAp: 0
+    _waterAp: 0
+    _airAp: 0
+    _earthAp: 0
+    _poisonAp: 0
+    _thunderAp: 0
+    _ap: 0
+    uI:
+      lines: {fileID: 0}
+      nick: {fileID: 0}
+      hp: {fileID: 0}
+      shield: {fileID: 0}
+      fireAp: {fileID: 0}
+      waterAp: {fileID: 0}
+      airAp: {fileID: 0}
+      earthAp: {fileID: 0}
+      poisonAp: {fileID: 0}
+      thunderAp: {fileID: 0}
+      ap: {fileID: 0}
+  - list: 
+    _hp: 0
+    _shield: 0
+    _fireAp: 0
+    _waterAp: 0
+    _airAp: 0
+    _earthAp: 0
+    _poisonAp: 0
+    _thunderAp: 0
+    _ap: 0
+    uI:
+      lines: {fileID: 0}
+      nick: {fileID: 0}
+      hp: {fileID: 0}
+      shield: {fileID: 0}
+      fireAp: {fileID: 0}
+      waterAp: {fileID: 0}
+      airAp: {fileID: 0}
+      earthAp: {fileID: 0}
+      poisonAp: {fileID: 0}
+      thunderAp: {fileID: 0}
+      ap: {fileID: 0}
+  - list: 
+    _hp: 0
+    _shield: 0
+    _fireAp: 0
+    _waterAp: 0
+    _airAp: 0
+    _earthAp: 0
+    _poisonAp: 0
+    _thunderAp: 0
+    _ap: 0
+    uI:
+      lines: {fileID: 0}
+      nick: {fileID: 0}
+      hp: {fileID: 0}
+      shield: {fileID: 0}
+      fireAp: {fileID: 0}
+      waterAp: {fileID: 0}
+      airAp: {fileID: 0}
+      earthAp: {fileID: 0}
+      poisonAp: {fileID: 0}
+      thunderAp: {fileID: 0}
+      ap: {fileID: 0}
+  - list: 
+    _hp: 0
+    _shield: 0
+    _fireAp: 0
+    _waterAp: 0
+    _airAp: 0
+    _earthAp: 0
+    _poisonAp: 0
+    _thunderAp: 0
+    _ap: 0
+    uI:
+      lines: {fileID: 0}
+      nick: {fileID: 0}
+      hp: {fileID: 0}
+      shield: {fileID: 0}
+      fireAp: {fileID: 0}
+      waterAp: {fileID: 0}
+      airAp: {fileID: 0}
+      earthAp: {fileID: 0}
+      poisonAp: {fileID: 0}
+      thunderAp: {fileID: 0}
+      ap: {fileID: 0}
 --- !u!1 &709161430
 GameObject:
   m_ObjectHideFlags: 0
