@@ -98,22 +98,21 @@ public class ServerController : MonoBehaviour {
     }
     public void SendToClient(bool loop_sending, Packet packet, Socket clientSocket){
 
+        int this_serial = 0;
         if (loop_sending){
             while (send_list[packet_serial]) {
                 packet_serial++;
                 if (packet_serial >= 256) packet_serial = 1;   
             }
-            send_list[packet_serial] = true;
-            packet.Change_Serial(packet_serial);
+            this_serial = packet_serial;
 
             packet_serial++;
             if (packet_serial >= 256) packet_serial = 1;   
         } 
 
-        if (packet.command != Command.M2C_PONG || !hide_ping_msg) packet.Print("server SEND " + clientSocket.RemoteEndPoint.ToString());
+        if (packet.command != Command.M2C_PONG || !hide_ping_msg) packet.Print(this_serial.ToString() + " server SEND " + clientSocket.RemoteEndPoint.ToString());
         byte[] data = packet.b_datas;
         byte[] byteArray = data;
-        int this_serial = packet.serial;
 
         if (loop_sending) {
             StartCoroutine(Loop_SendData(this_serial, byteArray, clientSocket));
@@ -124,7 +123,12 @@ public class ServerController : MonoBehaviour {
 
     IEnumerator Loop_SendData(int this_serial, byte[] data, Socket clientSocket){
         int i = 5;
+
+        byte[] d = data;
+        send_list[this_serial] = true;
+        d[0] = System.Convert.ToByte(this_serial);
         while(send_list[this_serial] && i > 0){
+            Debug.Log(this_serial.ToString() + " " + clientSocket.RemoteEndPoint.ToString());
             SendData(data, clientSocket);
             yield return new WaitForSeconds(1);
             //i--;

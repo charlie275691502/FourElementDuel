@@ -49,6 +49,7 @@ public class S_GamePlayManager : MonoBehaviour {
     }
 
     public void StartGame(){
+        Debug.Log("Start game");
         performer_serial = Constants.maxPlayer - 1;
         UpdateBoard();
         NextTurn();
@@ -117,7 +118,7 @@ public class S_GamePlayManager : MonoBehaviour {
 
     bool AllGameReady(){
         for (int i = 0; i < 4; i++){
-            if (!serverController.playerList.players[0].game_ready) return false;
+            if (!serverController.playerList.players[i].game_ready) return false;
         }
         return true;
     }

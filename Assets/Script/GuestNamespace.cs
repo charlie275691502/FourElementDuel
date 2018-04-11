@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Net.Sockets;
 
 namespace Guest{
+    [System.Serializable]
     public class Player
     {
         public int serial;

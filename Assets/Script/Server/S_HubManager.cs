@@ -23,8 +23,8 @@ public class S_HubManager : MonoBehaviour {
     void Update()
     {
         if (onReceive){
-            onReceive = false;
             AnalysisReceive(receivePacket, receiveEndPoint);
+            onReceive = false;
         }
     }
 
@@ -82,7 +82,7 @@ public class S_HubManager : MonoBehaviour {
 
     bool AllReady(){
         for (int i = 0; i < 4; i++) {
-            if (!serverController.playerList.players[0].ready) return false;
+            if (!serverController.playerList.players[i].ready) return false;
         }
         return true;
     }

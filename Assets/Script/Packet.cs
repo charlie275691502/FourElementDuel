@@ -108,11 +108,6 @@ public class Packet{
 		b_datas = Generate_b_datas();
 	}
 
-    public void Change_Serial(int s){
-        serial = s;
-        b_datas[0] = System.Convert.ToByte(serial);
-    }
-
 	public Packet(byte[] b_d){
 		b_datas = b_d;
 		serial = b_d [0];
