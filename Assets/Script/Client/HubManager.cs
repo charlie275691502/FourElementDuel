@@ -18,15 +18,12 @@ public class HubManager : MonoBehaviour {
         receiveSerials = clientController.AddSubscriptor(new ClientSubscriptor(OnReceive, new Command[2] { Command.M2C_HUB_LIST, Command.M2C_START_GAME }));
         clientController.SendToServer(new Packet(Command.C2M_CHANGE_NICK, new string[1] { gameController.nick }));
     }
-    void OnDisable()
-    {
+    void OnDisable(){
         clientController.RemoveSubscriptor(receiveSerials);
     }
 
-    void Update()
-    {
-        if (onReceive)
-        {
+    void Update(){
+        if (onReceive){
             AnalysisReceive(receivePacket);
             onReceive = false;
         }
@@ -34,8 +31,7 @@ public class HubManager : MonoBehaviour {
 
     /* -- Sending Packet -- */
 
-    public void Change_Nick(string nick)
-    {
+    public void Change_Nick(string nick){
         clientController.SendToServer(new Packet(Command.C2M_CHANGE_NICK, new string[1] { nick }));
         PlayerPrefs.SetString("NICK", nick);
     }
@@ -59,8 +55,7 @@ public class HubManager : MonoBehaviour {
 
     public void AnalysisReceive(Packet packet)
     {
-        switch (packet.command)
-        {
+        switch (packet.command){
             case Command.M2C_HUB_LIST:
                 M2C_HUB_LIST(packet);
                 break;

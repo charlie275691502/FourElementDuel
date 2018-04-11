@@ -127,7 +127,7 @@ public class ServerController : MonoBehaviour {
         while(send_list[this_serial] && i > 0){
             SendData(data, clientSocket);
             yield return new WaitForSeconds(1);
-            i--;
+            //i--;
         }
     }
 

@@ -14,7 +14,7 @@ public class ClientAttributes : Attributes{
     public override int poisonAp    { get { return _poisonAp; }     set { _poisonAp = value;    uI.poisonAp.text = value.ToString(); } }
     public override int thunderAp   { get { return _thunderAp; }    set { _thunderAp = value;   uI.thunderAp.text = value.ToString(); } }
     public override int ap          { get { return _ap; }           set { _ap = value;          uI.ap.text = value.ToString(); } }
-    public AttributesUI uI;
+    public AttributesUI uI = new AttributesUI();
 
     public void UpdateList(List<int> l){
         hp = l[0];

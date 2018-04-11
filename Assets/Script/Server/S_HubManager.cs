@@ -23,8 +23,8 @@ public class S_HubManager : MonoBehaviour {
     void Update()
     {
         if (onReceive){
-            AnalysisReceive(receivePacket, receiveEndPoint);
             onReceive = false;
+            AnalysisReceive(receivePacket, receiveEndPoint);
         }
     }
 

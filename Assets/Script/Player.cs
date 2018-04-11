@@ -30,7 +30,7 @@ public class Player{
     public string nick;
     public Socket clientSocket;
     public int gameSerial;
-    public Attributes attribute;
+    public Attributes attribute = new Attributes();
     public List<int> cards;
 
     public Player(string n, Socket cs, int g){
