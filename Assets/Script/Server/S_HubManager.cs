@@ -66,10 +66,9 @@ public class S_HubManager : MonoBehaviour {
 
     void C2M_PLAY(Packet packet, string endPoint){
         if (!AllReady()) return;
-        serverController.playerList.players[0].ready = false;
-        serverController.playerList.players[1].ready = false;
-        serverController.playerList.players[2].ready = false;
-        serverController.playerList.players[3].ready = false;
+        for (int i = 0; i < Constants.maxPlayer; i++){ 
+            serverController.playerList.players[i].ready = false;
+        }
         s_GameController.s_GamePlayManager.InitGame();
     }
 
@@ -81,7 +80,7 @@ public class S_HubManager : MonoBehaviour {
     /* -- Processing Packet -- */
 
     bool AllReady(){
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < Constants.maxPlayer; i++) {
             if (!serverController.playerList.players[i].ready) return false;
         }
         return true;

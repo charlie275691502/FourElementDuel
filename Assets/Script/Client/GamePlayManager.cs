@@ -14,6 +14,7 @@ public class ClientAttributes : Attributes{
     public override int poisonAp    { get { return _poisonAp; }     set { _poisonAp = value;    uI.poisonAp.text = value.ToString(); } }
     public override int thunderAp   { get { return _thunderAp; }    set { _thunderAp = value;   uI.thunderAp.text = value.ToString(); } }
     public override int ap          { get { return _ap; }           set { _ap = value;          uI.ap.text = value.ToString(); } }
+    public override int cardsCount  { get { return _cardsCount; }   set { _cardsCount = value;  uI.cardsCount.text = value.ToString(); } }
     public AttributesUI uI = new AttributesUI();
 
     public void UpdateList(List<int> l){
@@ -26,6 +27,7 @@ public class ClientAttributes : Attributes{
         poisonAp = l[6];
         thunderAp = l[7];
         ap = l[8];
+        cardsCount = l[9];
     }
 }
 
@@ -42,6 +44,7 @@ public class AttributesUI{
     public Text poisonAp;
     public Text thunderAp;
     public Text ap;
+    public Text cardsCount;
 
     public void UpdateUI(string n, List<int> list){
         nick.text = n;
@@ -54,6 +57,7 @@ public class AttributesUI{
         poisonAp.text = list[6].ToString();
         thunderAp.text = list[7].ToString();
         ap.text = list[8].ToString();
+        cardsCount.text = list[9].ToString(); 
     }
 
     public void UpdateFrameColor(Color color){
@@ -68,27 +72,37 @@ public class GamePlayManager : MonoBehaviour {
     public ClientController clientController;
     public GameController gameController;
 
+    public CardsHandler cardsHandler;
+
     private int receiveSerials;
     private bool onReceive;
     private Packet receivePacket;
 
     public ClientAttributes[] clientAttributes;
 
+    bool ready_ok_receive;
     void OnEnable(){
         onReceive = false;
-        receiveSerials = clientController.AddSubscriptor(new ClientSubscriptor(OnReceive, new Command[4] { Command.M2C_UPDATE_BOARD, Command.M2C_TURN_START, Command.M2C_DRAW, Command.M2C_GAIN_SKILLPOINT }));
-        clientController.SendToServer(new Packet(Command.C2M_GAME_READY));
+        receiveSerials = clientController.AddSubscriptor(new ClientSubscriptor(OnReceive, new Command[3] { Command.M2C_UPDATE_BOARD, Command.M2C_TURN_START, Command.M2C_GAIN_SKILLPOINT }));
+        StartCoroutine(LoopSendingGameReady());
     }
-    void OnDisable()
-    {
+
+    void OnDisable(){
         clientController.RemoveSubscriptor(receiveSerials);
     }
 
-    void Update()
-    {
+    void Update(){
         if (onReceive){
             AnalysisReceive(receivePacket);
             onReceive = false;
+        }
+    }
+
+    IEnumerator LoopSendingGameReady(){
+        ready_ok_receive = false;
+        while(ready_ok_receive == false){
+            clientController.SendToServer(new Packet(Command.C2M_GAME_READY));
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
@@ -102,7 +116,7 @@ public class GamePlayManager : MonoBehaviour {
     /* -- Receiving Packet -- */
 
     public void OnReceive(Packet packet){
-        while (onReceive == true) { }
+        while (onReceive == true) { Debug.Log("true"); }
         onReceive = true;
         receivePacket = packet;
     }
@@ -115,9 +129,6 @@ public class GamePlayManager : MonoBehaviour {
             case Command.M2C_TURN_START:
                 M2C_TURN_START(packet);
                 break;
-            case Command.M2C_DRAW:
-                M2C_DRAW(packet);
-                break;
             case Command.M2C_GAIN_SKILLPOINT:
                 M2C_GAIN_SKILLPOINT(packet);
                 break;
@@ -127,6 +138,7 @@ public class GamePlayManager : MonoBehaviour {
     }
 
     void M2C_UPDATE_BOARD(Packet packet){
+        cardsHandler.UpdateCards(packet.l_datas[Constants.maxPlayer]);
         for (int i = 0; i < Constants.maxPlayer; i++){
             clientAttributes[i].uI.UpdateUI(packet.s_datas[ClientSerialToServerSerial(i)], packet.l_datas[ClientSerialToServerSerial(i)]);
         }
@@ -134,14 +146,12 @@ public class GamePlayManager : MonoBehaviour {
 
     bool myTurn = false;
     void M2C_TURN_START(Packet packet){
+        ready_ok_receive = true;
+        Debug.Log("Ready ok!");
         for (int i = 0; i < Constants.maxPlayer; i++) clientAttributes[i].uI.UpdateFrameColor(Color.white);
         int x = ServerSerialToClientSerial(packet.datas[0]);
         clientAttributes[x].uI.UpdateFrameColor(Color.yellow);
         myTurn = (x == 0);
-    }
-
-    void M2C_DRAW(Packet packet){
-        
     }
 
     void M2C_GAIN_SKILLPOINT(Packet packet){

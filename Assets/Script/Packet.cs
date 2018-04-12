@@ -11,6 +11,7 @@ using System.Threading;
 
 static class Constants{
 	public const int maxPlayer = 4;
+    public const int maxCards = 40;
 }
 
 public enum Data_Type{
@@ -54,8 +55,7 @@ public enum Command
     M2C_START_GAME = 0x91,
     M2C_UPDATE_BOARD = 0xA0,
     M2C_TURN_START = 0xA1,
-    M2C_DRAW = 0xA2,
-    M2C_GAIN_SKILLPOINT = 0xA3
+    M2C_GAIN_SKILLPOINT = 0xA2
 }
 
 public class Packet{
@@ -305,7 +305,6 @@ public class Packet{
             case Command.M2C_START_GAME:        return new Data_Type[1] { Data_Type.Byte };
             case Command.M2C_UPDATE_BOARD:      return new Data_Type[9] { Data_Type.String, Data_Type.String, Data_Type.String, Data_Type.String, Data_Type.Short_List, Data_Type.Short_List, Data_Type.Short_List, Data_Type.Short_List, Data_Type.Short_List };
             case Command.M2C_TURN_START:        return new Data_Type[1] { Data_Type.Byte };
-            case Command.M2C_DRAW:              return new Data_Type[1] { Data_Type.Short_List };
             case Command.M2C_GAIN_SKILLPOINT:   return new Data_Type[1] { Data_Type.Byte };
 		    default:
 			    break;
@@ -327,7 +326,7 @@ public class Packet{
 		int s_d_pointer = 0;
 		int l_d_pointer = 0;
 		foreach (Data_Type data_Type in data_Types) {
-			if (d_pointer + f_d_pointer > 0) d_string += ",";
+            if (d_pointer + f_d_pointer + s_d_pointer + l_d_pointer > 0) d_string += ",";
 
 			switch (Decide_NUM (data_Type)) {
 			case NUM.Integer:	
