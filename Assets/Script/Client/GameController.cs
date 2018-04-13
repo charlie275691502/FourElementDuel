@@ -47,8 +47,7 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    void Change_Camera_Size()
-    {
+    void Change_Camera_Size(){
         float dpi = Screen.dpi;
         if (Mathf.Abs(dpi - 0.0f) < 0.01f){
             dpi = 400.0f;

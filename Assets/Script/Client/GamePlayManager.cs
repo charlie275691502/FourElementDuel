@@ -83,8 +83,9 @@ public class GamePlayManager : MonoBehaviour {
     bool ready_ok_receive;
     void OnEnable(){
         onReceive = false;
-        receiveSerials = clientController.AddSubscriptor(new ClientSubscriptor(OnReceive, new Command[3] { Command.M2C_UPDATE_BOARD, Command.M2C_TURN_START, Command.M2C_GAIN_SKILLPOINT }));
-        StartCoroutine(LoopSendingGameReady());
+        receiveSerials = clientController.AddSubscriptor(new ClientSubscriptor(OnReceive, new Command[4] { Command.M2C_UPDATE_BOARD, Command.M2C_TURN_START, Command.M2C_START_CARDING, Command.M2C_SPELL_TARGETING }));
+        //StartCoroutine(LoopSendingGameReady());
+        cardsHandler.UpdateCards(new List<int>(new int[3] { 2, 3, 4 }), 2, 1);
     }
 
     void OnDisable(){
@@ -110,13 +111,23 @@ public class GamePlayManager : MonoBehaviour {
 
     // 1~6
     public void PutSkillPoint(int index){
+        if (!myTurn) return;
         clientController.SendToServer(new Packet(Command.C2M_PUT_SKILLPOINT, new int[1]{index}));
+    }
+
+    public void Carding(int card, int dir){
+        clientController.SendToServer(new Packet(Command.C2M_CARDING, new int[2] { card, dir }));
+        startCarding = false;
+    }
+
+    public void Targeting(int target){
+        clientController.SendToServer(new Packet(Command.C2M_TARGETING, new int[1] { target }));
     }
 
     /* -- Receiving Packet -- */
 
     public void OnReceive(Packet packet){
-        while (onReceive == true) { Debug.Log("true"); }
+        while (onReceive == true) { }
         onReceive = true;
         receivePacket = packet;
     }
@@ -129,8 +140,11 @@ public class GamePlayManager : MonoBehaviour {
             case Command.M2C_TURN_START:
                 M2C_TURN_START(packet);
                 break;
-            case Command.M2C_GAIN_SKILLPOINT:
-                M2C_GAIN_SKILLPOINT(packet);
+            case Command.M2C_START_CARDING:
+                M2C_START_CARDING(packet);
+                break;
+            case Command.M2C_SPELL_TARGETING:
+                M2C_SPELL_TARGETING(packet);
                 break;
             default:
                 break;
@@ -138,7 +152,7 @@ public class GamePlayManager : MonoBehaviour {
     }
 
     void M2C_UPDATE_BOARD(Packet packet){
-        cardsHandler.UpdateCards(packet.l_datas[Constants.maxPlayer]);
+        cardsHandler.UpdateCards(packet.l_datas[Constants.maxPlayer], packet.datas[0], packet.datas[1]);
         for (int i = 0; i < Constants.maxPlayer; i++){
             clientAttributes[i].uI.UpdateUI(packet.s_datas[ClientSerialToServerSerial(i)], packet.l_datas[ClientSerialToServerSerial(i)]);
         }
@@ -147,15 +161,19 @@ public class GamePlayManager : MonoBehaviour {
     bool myTurn = false;
     void M2C_TURN_START(Packet packet){
         ready_ok_receive = true;
-        Debug.Log("Ready ok!");
         for (int i = 0; i < Constants.maxPlayer; i++) clientAttributes[i].uI.UpdateFrameColor(Color.white);
         int x = ServerSerialToClientSerial(packet.datas[0]);
         clientAttributes[x].uI.UpdateFrameColor(Color.yellow);
         myTurn = (x == 0);
     }
 
-    void M2C_GAIN_SKILLPOINT(Packet packet){
-        clientAttributes[0].ap += packet.datas[0];
+    public bool startCarding = false;
+    void M2C_START_CARDING(Packet packet){
+        startCarding = true;
+    }
+
+    void M2C_SPELL_TARGETING(Packet packet){
+
     }
 
     /* -- Processing data -- */

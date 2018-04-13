@@ -47,6 +47,8 @@ public class PlayersGameStatus{
     public List<Player> players = new List<Player>();
     public string[] nicks = new string[0];
     public List<int> cards;
+    public int placedCard = 0;
+    public int placedDir = 0;
 
     public PlayersGameStatus(){
         cards = new List<int>(new int[Constants.maxCards]);

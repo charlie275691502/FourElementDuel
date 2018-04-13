@@ -48,6 +48,8 @@ public enum Command
     C2M_HUB_READY = 0x12,
     C2M_GAME_READY = 0x13,
     C2M_PUT_SKILLPOINT = 0x20,
+    C2M_CARDING = 0x21,
+    C2M_TARGETING = 0x22,
 
     M2C_PONG = 0x81,
     M2C_WELCOME = 0x83,
@@ -55,7 +57,8 @@ public enum Command
     M2C_START_GAME = 0x91,
     M2C_UPDATE_BOARD = 0xA0,
     M2C_TURN_START = 0xA1,
-    M2C_GAIN_SKILLPOINT = 0xA2
+    M2C_START_CARDING = 0xA2,
+    M2C_SPELL_TARGETING = 0xA3
 }
 
 public class Packet{
@@ -297,15 +300,18 @@ public class Packet{
             case Command.C2M_PLAY:              return new Data_Type[0];
             case Command.C2M_HUB_READY:         return new Data_Type[0];
             case Command.C2M_GAME_READY:        return new Data_Type[0];
-            case Command.C2M_PUT_SKILLPOINT:    return new Data_Type[1]{ Data_Type.Byte };
+            case Command.C2M_PUT_SKILLPOINT:    return new Data_Type[1] { Data_Type.Byte };
+            case Command.C2M_CARDING:           return new Data_Type[2] { Data_Type.Byte, Data_Type.Byte };
+            case Command.C2M_TARGETING:         return new Data_Type[1] { Data_Type.Byte };
                 
             case Command.M2C_PONG:              return new Data_Type[1] { Data_Type.Byte };
             case Command.M2C_WELCOME:           return new Data_Type[1] { Data_Type.Byte };
             case Command.M2C_HUB_LIST:          return new Data_Type[1] { Data_Type.String };
             case Command.M2C_START_GAME:        return new Data_Type[1] { Data_Type.Byte };
-            case Command.M2C_UPDATE_BOARD:      return new Data_Type[9] { Data_Type.String, Data_Type.String, Data_Type.String, Data_Type.String, Data_Type.Short_List, Data_Type.Short_List, Data_Type.Short_List, Data_Type.Short_List, Data_Type.Short_List };
+            case Command.M2C_UPDATE_BOARD:      return new Data_Type[11]{ Data_Type.Byte, Data_Type.Byte, Data_Type.String, Data_Type.String, Data_Type.String, Data_Type.String, Data_Type.Short_List, Data_Type.Short_List, Data_Type.Short_List, Data_Type.Short_List, Data_Type.Short_List };
             case Command.M2C_TURN_START:        return new Data_Type[1] { Data_Type.Byte };
-            case Command.M2C_GAIN_SKILLPOINT:   return new Data_Type[1] { Data_Type.Byte };
+            case Command.M2C_START_CARDING:     return new Data_Type[0];
+            case Command.M2C_SPELL_TARGETING:   return new Data_Type[2] { Data_Type.Byte, Data_Type.Short_List };
 		    default:
 			    break;
 		}
